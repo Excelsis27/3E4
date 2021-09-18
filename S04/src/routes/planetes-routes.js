@@ -3,6 +3,8 @@ import HttpErrors from 'http-errors';
 import HttpStatus from 'http-status';
 
 import PLANETS from '../data/planets.js';
+import planetsRepository from '../repositories/planets-repository.js';
+
 
 const router = express.Router();
 
@@ -17,27 +19,36 @@ class PlanetsRoutes {
         router.put('/:idPlanet', this.put);
     }
 
-    getAll(req, res, next) {
-        // res.status(200);
-        // res.set('Content-Type', 'application/json');
-        // res.send(PLANETS);
+    async getAll(req, res, next) {
+        const filter = {};
+        
+        if(req.query.explorer) {
+            filter.discoveredBy = req.query.explorer;
+        }
 
-        res.status(200).json(PLANETS);
+        try {
+            const planets = await planetsRepository.retrieveAll(filter);
+            res.status(200).json(planets);
+        } catch(err){
+            return next(err);
+        }
     }
-    getOne(req, res, next) {
+
+    async getOne(req, res, next) {
         const idPlanet = req.params.idPlanet
 
-        //1. La planèete existe = 200 - ok
-
-        const planet = PLANETS.find(p => p.id == idPlanet);
-        console.log(planet);
-
-        if (!planet) {
-            //2. La planèete existe pas = 404 not found
-            return next(HttpErrors.NotFound(`La planète avec l'id ${idPlanet} n'existe pas`));
-        } else {
-            res.status(200).json(planet); // Content-Type & send la response
+        try {
+            const planet = await planetsRepository.retrieveById(idPlanet);
+    
+            if (!planet) {    
+                return next(HttpErrors.NotFound(`La planète avec l'id ${idPlanet} n'existe pas`));
+            } else {
+                res.status(200).json(planet); // Content-Type & send la response
+            }
+        } catch(err) {
+            return next(err);
         }
+        
     }
 
     post(req, res, next) {
