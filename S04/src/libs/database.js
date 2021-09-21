@@ -13,5 +13,4 @@ export default async () => {
         console.log(chalk.red(`[MONGO] - Cannot connect to: ${url}\n ${err} ... \n Exiting`));
         process.exit(1);
     }
-    
 }
