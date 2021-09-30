@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@1&display=swap');
+
+body {
+    color: white;
+    background-color: #2E2E2E;
+}
+
+.card {
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    margin: 14px;
+    text-align: center;
+    background-color: #3B3B3B;
+    border-color: #686868;
+    color: white;
+}
+
+.nom-planet {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.3em;
+}
